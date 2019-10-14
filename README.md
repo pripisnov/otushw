@@ -13,3 +13,10 @@ pripisnov@bk.ru
  - Определить необходимые зависимости:
     - guava;
  - Собрать jar с зависимостями ("толстый" jar).
+ 
+ ***ДЗ: hw03-collection*** DIY ArrayList, работоспособность методов для size >= 20:
+ 
+ - Collections.addAll(Collection<? super T> c, T... elements);
+ - Collections.static <T> void copy(List<? super T> dest, List<? extends T> src);
+ - Collections.static <T> void sort(List<T> list, Comparator<? super T> c).
+ 
