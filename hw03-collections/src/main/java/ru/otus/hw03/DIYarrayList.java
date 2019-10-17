@@ -1,8 +1,6 @@
 package ru.otus.hw03;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class DIYarrayList<T> implements List<T> {
     private static final int INITIAL_CAPACITY = 10;
@@ -32,7 +30,7 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return this.items.length == 0;
+        return this.size() == 0;
     }
 
     @Override
@@ -72,14 +70,25 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        if (this.currentIndex == this.items.length) resize();
-        this.items[this.currentIndex++] = t;
+        if (this.currentIndex == this.items.length) this.resize();
+        this.items[this.currentIndex] = t;
+        this.currentIndex++;
         return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        throw new UnsupportedOperationException();
+        int idx;
+        while ((idx = this.indexOf(o)) > -1) {
+            if (this.currentIndex - idx + 1 >= 0) {
+                int srcPos = idx + 1;
+                int len = this.currentIndex - srcPos;
+                System.arraycopy(this.items, srcPos, this.items, idx, len);
+            }
+            this.items[this.currentIndex - 1] = null;
+            this.currentIndex--;
+        }
+        return true;
     }
 
     @Override
@@ -90,9 +99,9 @@ public class DIYarrayList<T> implements List<T> {
     @Override
     public boolean addAll(Collection<? extends T> c) {
         if (this.currentIndex + c.size() >= this.items.length)
-            resize(this.currentIndex + c.size() - this.items.length);
+            this.resize(this.currentIndex + c.size() - this.items.length);
         for (T t : c) {
-            add(t);
+            this.add(t);
         }
         return true;
     }
@@ -230,25 +239,5 @@ public class DIYarrayList<T> implements List<T> {
         }
         s.append("]");
         return s.toString();
-    }
-
-    public static void main(String[] args) {
-
-        List<Integer> src = IntStream.range(0, 100).boxed().collect(Collectors.toList());
-        List<Integer> dest = new DIYarrayList<>();
-        for(int i = 0; i < src.size(); i++) {
-            dest.add(i);
-        }
-
-        Collections.copy(dest, src);
-        Collections.addAll(dest, 44, 11, 300);
-        Collections.sort(dest,  Comparator.comparingInt(o -> o));
-
-        System.out.println(dest);
-
-        List<Integer> newDest = new DIYarrayList<>();
-
-        System.out.println(newDest);
-
     }
 }
