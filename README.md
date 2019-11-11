@@ -20,3 +20,8 @@ pripisnov@bk.ru
  - Collections.static <T> void copy(List<? super T> dest, List<? extends T> src);
  - Collections.static <T> void sort(List<T> list, Comparator<? super T> c).
  
+ ***ДЗ: hw10-framework*** поддержка аннотаций @Test, @Before, @After:
+ - Создать аннотации  @Test, @Before, @After;
+ - Создать запуск теста по имени класса с тестами;
+ - На основании исключений, возникших во время тестирования, вывести статистику выполенния тестов (started, failed, passed)
+ 
