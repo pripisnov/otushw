@@ -12,21 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestLoader {
-    private static List<Method> beforeMethods;
-    private static List<Method> testMethods;
-    private static List<Method> afterMethods;
-    private static int passedTestCount;
-    private static int failedTestCount;
-    private static Class klass;
+    private  List<Method> beforeMethods;
+    private  List<Method> testMethods;
+    private  List<Method> afterMethods;
+    private  int passedTestCount;
+    private  int failedTestCount;
+    private  Class klass;
 
-    static {
-        beforeMethods = new ArrayList<>();
-        testMethods = new ArrayList<>();
-        afterMethods = new ArrayList<>();
+    public TestLoader() {
+        this.beforeMethods = new ArrayList<>();
+        this.testMethods = new ArrayList<>();
+        this.afterMethods = new ArrayList<>();
     }
 
     @SneakyThrows
-    public static void testLoad(String className) {
+    public void testLoad(String className) {
         klass = Class.forName(className);
         Method[] methods = klass.getDeclaredMethods();
 
@@ -35,7 +35,7 @@ public class TestLoader {
         load();
     }
 
-    private static void sortMethods(Method[] methods) {
+    private void sortMethods(Method[] methods) {
         clear();
         for (Method method : methods) {
             Annotation[] annotations = method.getDeclaredAnnotations();
@@ -51,7 +51,7 @@ public class TestLoader {
         }
     }
 
-    private static void clear() {
+    private void clear() {
         testMethods.clear();
         beforeMethods.clear();
         afterMethods.clear();
@@ -59,10 +59,10 @@ public class TestLoader {
         failedTestCount = 0;
     }
 
-    private static void load() {
+    private void load() {
         for (Method method : testMethods) {
             Object o = getClassInstance(klass);
-            invoke(method, o);
+            this.invoke(method, o);
         }
     }
 
@@ -72,26 +72,33 @@ public class TestLoader {
         return constructor.newInstance();
     }
 
-    private static void invoke(Method testMethod, Object o) {
+    private void invoke(Method testMethod, Object o) {
         for (Method method : beforeMethods) {
-            invokeMethod(method, o);
+            this.invokeBeforeMethod(method, o);
         }
         invokeTestMethod(testMethod, o);
         for (Method method : afterMethods) {
-            invokeMethod(method, o);
+            this.invokeMethod(method, o);
         }
     }
 
     @SneakyThrows
-    private static void invokeMethod(Method method, Object o) {
+    private void invokeMethod(Method method, Object o) {
         method.setAccessible(true);
         method.invoke(o);
     }
 
-    private static void invokeTestMethod(Method method, Object o) {
+    private void invokeBeforeMethod(Method method, Object o) {
         try {
-            method.setAccessible(true);
-            method.invoke(o);
+            this.invokeMethod(method, o);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void invokeTestMethod(Method method, Object o) {
+        try {
+            this.invokeMethod(method, o);
             passedTestCount++;
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,7 +106,7 @@ public class TestLoader {
         }
     }
 
-    public static void printResults() {
+    public void printResults() {
         System.out.println("Tests started: " + testMethods.size() +
                 "\nfailed: " + failedTestCount + ", passed: " + passedTestCount);
     }

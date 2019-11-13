@@ -28,4 +28,10 @@ public class TestClass {
     void afterPrintData() {
 
     }
+
+    @SneakyThrows
+    @Before
+    void otherBeforePrintData() {
+        throw new Exception();
+    }
 }
