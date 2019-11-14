@@ -62,7 +62,9 @@ public class TestLoader {
     private void load() {
         for (Method method : testMethods) {
             Object o = getClassInstance(klass);
-            this.invoke(method, o);
+            boolean pass = invokeBeforeMethods(o) && invokeTestMethod(method, o);
+            this.setResult(pass);
+            this.invokeAfterMethods(o);
         }
     }
 
@@ -72,14 +74,30 @@ public class TestLoader {
         return constructor.newInstance();
     }
 
-    private void invoke(Method testMethod, Object o) {
+    private boolean invokeBeforeMethods(Object o) {
+        boolean pass = true;
         for (Method method : beforeMethods) {
-            this.invokeBeforeMethod(method, o);
+            if (!(pass = tryInvokeMethod(method, o)))
+                break;
         }
-        invokeTestMethod(testMethod, o);
+        return pass;
+    }
+
+    private boolean invokeTestMethod(Method method, Object o) {
+        return tryInvokeMethod(method, o);
+    }
+
+    private void invokeAfterMethods(Object o) {
         for (Method method : afterMethods) {
             this.invokeMethod(method, o);
         }
+    }
+
+    private void setResult(boolean flag) {
+        if (flag)
+            passedTestCount++;
+        else
+            failedTestCount++;
     }
 
     @SneakyThrows
@@ -88,21 +106,13 @@ public class TestLoader {
         method.invoke(o);
     }
 
-    private void invokeBeforeMethod(Method method, Object o) {
+    private boolean tryInvokeMethod(Method method, Object o) {
         try {
             this.invokeMethod(method, o);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private void invokeTestMethod(Method method, Object o) {
-        try {
-            this.invokeMethod(method, o);
-            passedTestCount++;
-        } catch (Exception e) {
-            e.printStackTrace();
-            failedTestCount++;
+            return false;
         }
     }
 
