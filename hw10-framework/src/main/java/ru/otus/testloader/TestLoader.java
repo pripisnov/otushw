@@ -62,9 +62,8 @@ public class TestLoader {
     private void load() {
         for (Method method : testMethods) {
             Object o = getClassInstance(klass);
-            boolean pass = invokeBeforeMethods(o) && invokeTestMethod(method, o);
+            boolean pass = invokeBeforeMethods(o) && invokeTestMethod(method, o) && invokeAfterMethods(o);
             this.setResult(pass);
-            this.invokeAfterMethods(o);
         }
     }
 
@@ -75,22 +74,24 @@ public class TestLoader {
     }
 
     private boolean invokeBeforeMethods(Object o) {
-        boolean pass = true;
-        for (Method method : beforeMethods) {
-            if (!(pass = tryInvokeMethod(method, o)))
-                break;
-        }
-        return pass;
+        return invokeMethods(beforeMethods, o);
     }
 
     private boolean invokeTestMethod(Method method, Object o) {
         return tryInvokeMethod(method, o);
     }
 
-    private void invokeAfterMethods(Object o) {
-        for (Method method : afterMethods) {
-            this.invokeMethod(method, o);
+    private boolean invokeAfterMethods(Object o) {
+        return invokeMethods(afterMethods, o);
+    }
+
+    private boolean invokeMethods(List<Method> methods, Object o) {
+        boolean pass = true;
+        for (Method method : methods) {
+            if (!(pass = tryInvokeMethod(method, o)))
+                break;
         }
+        return pass;
     }
 
     private void setResult(boolean flag) {
