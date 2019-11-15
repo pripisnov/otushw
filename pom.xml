@@ -19,6 +19,8 @@
     <modules>
         <module>hw01-maven</module>
         <module>hw03-collections</module>
+        <module>hw09-classloader</module>
+        <module>hw10-framework</module>
     </modules>
 
     <properties>
@@ -26,6 +28,7 @@
         <maven.compiler.source>12</maven.compiler.source>
         <maven.compiler.target>12</maven.compiler.target>
         <com.google.guava.version>27.1-jre</com.google.guava.version>
+        <org.projectlombok.version>1.18.10</org.projectlombok.version>
         <my.variable>42</my.variable>
     </properties>
 
@@ -35,6 +38,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${com.google.guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.10</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
