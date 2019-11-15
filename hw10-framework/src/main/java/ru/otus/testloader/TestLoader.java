@@ -62,8 +62,7 @@ public class TestLoader {
     private void load() {
         for (Method method : testMethods) {
             Object o = getClassInstance(klass);
-            boolean pass = invokeBeforeMethods(o) && invokeTestMethod(method, o) && invokeAfterMethods(o);
-            this.setResult(pass);
+            this.invoke(method, o);
         }
     }
 
@@ -73,32 +72,14 @@ public class TestLoader {
         return constructor.newInstance();
     }
 
-    private boolean invokeBeforeMethods(Object o) {
-        return invokeMethods(beforeMethods, o);
-    }
-
-    private boolean invokeTestMethod(Method method, Object o) {
-        return tryInvokeMethod(method, o);
-    }
-
-    private boolean invokeAfterMethods(Object o) {
-        return invokeMethods(afterMethods, o);
-    }
-
-    private boolean invokeMethods(List<Method> methods, Object o) {
-        boolean pass = true;
-        for (Method method : methods) {
-            if (!(pass = tryInvokeMethod(method, o)))
-                break;
+    private void invoke(Method testMethod, Object o) {
+        for (Method method : beforeMethods) {
+            this.invokeBeforeMethod(method, o);
         }
-        return pass;
-    }
-
-    private void setResult(boolean flag) {
-        if (flag)
-            passedTestCount++;
-        else
-            failedTestCount++;
+        invokeTestMethod(testMethod, o);
+        for (Method method : afterMethods) {
+            this.invokeMethod(method, o);
+        }
     }
 
     @SneakyThrows
@@ -107,13 +88,21 @@ public class TestLoader {
         method.invoke(o);
     }
 
-    private boolean tryInvokeMethod(Method method, Object o) {
+    private void invokeBeforeMethod(Method method, Object o) {
         try {
             this.invokeMethod(method, o);
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+        }
+    }
+
+    private void invokeTestMethod(Method method, Object o) {
+        try {
+            this.invokeMethod(method, o);
+            passedTestCount++;
+        } catch (Exception e) {
+            e.printStackTrace();
+            failedTestCount++;
         }
     }
 
