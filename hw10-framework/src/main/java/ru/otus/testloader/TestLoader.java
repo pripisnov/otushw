@@ -63,7 +63,7 @@ public class TestLoader {
         for (Method method : testMethods) {
             Object o = getClassInstance(klass);
             boolean pass = invokeBeforeMethods(o) && invokeTestMethod(method, o) && invokeAfterMethods(o);
-            this.setResult(pass);
+            setResult(pass);
         }
     }
 
