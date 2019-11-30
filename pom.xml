@@ -22,6 +22,7 @@
         <module>hw09-classloader</module>
         <module>hw10-framework</module>
         <module>hw12-atm</module>
+        <module>hw14-department</module>
     </modules>
 
     <properties>

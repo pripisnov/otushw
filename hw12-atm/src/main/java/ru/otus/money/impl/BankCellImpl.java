@@ -1,13 +1,27 @@
 package ru.otus.money.impl;
 
-import lombok.*;
 import ru.otus.money.BankCell;
-import ru.otus.money.MoneyType;
+import ru.otus.money.Currency;
 
-@RequiredArgsConstructor
 public class BankCellImpl implements BankCell {
     private int balance;
-    @NonNull private final MoneyType moneyType;
+    private final Currency currency;
+    private final int nominal;
+
+    public BankCellImpl(Currency currency, int nominal) {
+        this.currency = currency;
+        this.nominal = nominal;
+    }
+
+    @Override
+    public int getNominal() {
+        return nominal;
+    }
+
+    @Override
+    public Currency getCurrency() {
+        return currency;
+    }
 
     @Override
     public int get(int count) {
@@ -16,13 +30,8 @@ public class BankCellImpl implements BankCell {
     }
 
     @Override
-    public void set(double count) {
+    public void set(int count) {
         balance += count;
-    }
-
-    @Override
-    public MoneyType getMoneyType() {
-        return moneyType;
     }
 
     @Override
