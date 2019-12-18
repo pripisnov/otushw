@@ -23,6 +23,8 @@
         <module>hw10-framework</module>
         <module>hw12-atm</module>
         <module>hw14-department</module>
+        <module>hw16-json</module>
+        <module>hw18-orm</module>
     </modules>
 
     <properties>
@@ -46,6 +48,11 @@
                 <artifactId>lombok</artifactId>
                 <version>1.18.10</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.197</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
