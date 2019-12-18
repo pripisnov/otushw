@@ -1,12 +1,13 @@
 package ru.otus.amt.impl;
 
-import ru.otus.amt.AMT;
+import ru.otus.amt.ATM;
 import ru.otus.money.BankCell;
 import ru.otus.money.Currency;
+import ru.otus.money.impl.BankCellImpl;
 
 import java.util.*;
 
-public class ATMImpl implements AMT {
+public class ATMImpl implements ATM {
     private static int AMT_COUNT;
     private static final String ERR_NOMINAL_MESSAGE = "failed nominal";
     private static final String ERR_CURRENCY_MESSAGE = "failed currency";
@@ -19,6 +20,12 @@ public class ATMImpl implements AMT {
     private Set<Currency> currencies;
     private Currency currency;
 
+    public ATMImpl(ATM atm) {
+        this.bankCells = new ArrayList<>();
+        this.currencies = new HashSet<>();
+        this.copy(atm);
+    }
+
     public ATMImpl(Currency currency) {
         this.currency = currency;
         this.bankCells = new ArrayList<>();
@@ -30,6 +37,7 @@ public class ATMImpl implements AMT {
         return AMT_COUNT;
     }
 
+    @Override
     public int getId() {
         return id;
     }
@@ -86,6 +94,11 @@ public class ATMImpl implements AMT {
         return bankCells.remove(getBankCell(bankCell.getNominal()));
     }
 
+    @Override
+    public List<BankCell> getBankCells() {
+        return bankCells;
+    }
+
     private BankCell getBankCell(int nominal) {
         for (BankCell cell : bankCells) {
             if (cell.getCurrency() == currency && cell.getNominal() == nominal)
@@ -96,8 +109,6 @@ public class ATMImpl implements AMT {
 
     private List<Integer> getMinimize(int count) {
         List<Integer> nominals = getNominal();
-
-
 
         List<Integer> money = new ArrayList<>();
         int moneyCount = count;
@@ -148,5 +159,31 @@ public class ATMImpl implements AMT {
                 balance += cell.balance() * cell.getNominal();
         }
         return balance;
+    }
+
+    @Override
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    @Override
+    public ATM copy() {
+        return new ATMImpl(this);
+    }
+
+    @Override
+    public ATM copy(ATM atm) {
+        if (!bankCells.isEmpty())
+            bankCells.clear();
+        if (!currencies.isEmpty())
+            currencies.clear();
+        this.id = atm.getId();
+        this.currency = atm.getCurrency();
+        for (BankCell bankCell : atm.getBankCells()) {
+            BankCell copyBankCell = new BankCellImpl(bankCell.getCurrency(), bankCell.getNominal());
+            copyBankCell.set(bankCell.balance());
+            this.addBankCell(copyBankCell);
+        }
+        return this;
     }
 }
