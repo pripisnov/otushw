@@ -102,23 +102,23 @@ public class DiyJsonSerializer {
         var clazz = val.getClass();
         if (clazz == String.class) {
             return Json.createValue((String) val);
-        } else if (clazz == int.class || clazz == Integer.class) {
+        } else if (clazz == Integer.class) {
             return Json.createValue((int) val);
-        } else if (clazz == short.class || clazz == Short.class) {
+        } else if (clazz == Short.class) {
             var v = (short) val;
             return Json.createValue(v);
-        } else if (clazz == byte.class || clazz == Byte.class) {
+        } else if (clazz == Byte.class) {
             var v = (byte) val;
             return Json.createValue(v);
-        } else if (clazz == long.class || clazz == Long.class) {
+        } else if (clazz == Long.class) {
             return Json.createValue((long) val);
-        } else if (clazz == double.class || clazz == Double.class) {
+        } else if (clazz == Double.class) {
             return Json.createValue((double) val);
-        } else if (clazz == float.class || clazz == Float.class) {
+        } else if (clazz == Float.class) {
             return Json.createValue((float) val);
-        } else if (clazz == boolean.class || clazz == Boolean.class) {
+        } else if (clazz == Boolean.class) {
             return Json.createValue(val.toString());
-        } else if (clazz == char.class || clazz == Character.class) {
+        } else if (clazz == Character.class) {
             return Json.createValue(val.toString());
         }
         throw new IllegalArgumentException("no type matches: " + clazz.getTypeName());
