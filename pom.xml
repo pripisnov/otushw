@@ -19,10 +19,11 @@
     <modules>
         <module>hw01-maven</module>
         <module>hw03-collections</module>
-        <module>hw09-classloader</module>
+<!--        <module>hw09-classloader</module>-->
         <module>hw10-framework</module>
         <module>hw12-atm</module>
         <module>hw14-department</module>
+        <module>hw15-json</module>
     </modules>
 
     <properties>
