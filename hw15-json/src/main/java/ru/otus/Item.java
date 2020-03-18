@@ -66,7 +66,8 @@ public class Item {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(strValue, aChar, shortValue, byteValue, intValue, longValue, floatValue, doubleValue, boolValue, list, set, map);
+        int result = Objects.hash(strValue, aChar, shortValue, byteValue, intValue,
+                longValue, floatValue, doubleValue, boolValue, list, set, map);
         result = 31 * result + Arrays.hashCode(strings);
         result = 31 * result + Arrays.hashCode(bytes);
         result = 31 * result + Arrays.hashCode(shorts);
