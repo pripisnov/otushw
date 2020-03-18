@@ -19,10 +19,11 @@
     <modules>
         <module>hw01-maven</module>
         <module>hw03-collections</module>
-        <module>hw09-classloader</module>
+<!--        <module>hw09-classloader</module>-->
         <module>hw10-framework</module>
         <module>hw12-atm</module>
         <module>hw14-department</module>
+        <module>hw15-json</module>
     </modules>
 
     <properties>
@@ -44,8 +45,28 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.10</version>
+                <version>${org.projectlombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>5.6.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.6.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
